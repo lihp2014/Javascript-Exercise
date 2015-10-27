@@ -32,19 +32,19 @@
 </div>
 <script type="text/javascript">
 	window.onload = function() {
-		//访问了该页面且点击过“我知道了”
 		var tip = document.getElementById('tip');
 		var iknow = document.getElementById('iknow');
+		//访问了该页面且点击过“我知道了”
 		if((/know=1/.exec(document.cookie)!=null)||(/visit=1/.exec(document.cookie)!=null)) {
 			tip.style.display = 'none';
 		}
-		//第一次访问页面没有点击“我知道了”
+		//第一次访问页面没有点击“我知道了” => 将没有点击这个状态存入cookie
 		if(/know=/.exec(document.cookie)==null) {
 			var exDate = new Date();
 			exDate.setDate(exDate.getDate()+365);
 			document.cookie = "know=0;expires="+exDate.toGMTString();
 		}
-		//第一次访问页面且没有点击“我知道了”，写入cookie
+		//第一次访问页面且没有点击“我知道了”，写入cookie => 继续将第一次访问记录存入cookie
 		if((/know=0/.exec(document.cookie)!=null)&&(/visit=1/.exec(document.cookie)==null)) {
 			var exDate = new Date();
 			exDate.setDate(exDate.getDate()+1);
