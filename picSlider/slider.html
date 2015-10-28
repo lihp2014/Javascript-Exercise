@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>slider</title>
+	<style type="text/css">
+	div{
+		width: 200px;
+		height: 200px;
+		background-image: url(1.jpg), url(2.jpg), url(3.jpg);
+		background-repeat: no-repeat;
+		background-size: 100% 100%, 100% 100%, 100% 100%;
+		background-position: 0 0, -500px -500px, -500px -500px;
+	}
+	</style>
+</head>
+<body>
+	<div id="slider"></div>
+	<script type="text/javascript">
+	window.onload = function() {
+		var div = document.getElementById('slider');
+		var positionArr = getStyle(div,"background-position").split(",");
+		var num = 0;
+		setInterval(function(){
+			num++;
+			if(num>=positionArr.length) {
+				num = 0;
+			}
+			for(var i=0;i<positionArr.length;i++) {
+				if(i == num) {
+					positionArr[i] = "0 0";
+				} else {
+					positionArr[i] = "-500px -500px";
+				}
+			}
+			div.style.backgroundPosition = positionArr.join(",");
+		},3000);
+	}
+
+	function getStyle(obj, attr) {
+		if(window.getComputedStyle) {
+			return window.getComputedStyle(obj, null)[attr];
+		} else {
+			return obj.currentStyle[attr];
+		}
+	}
+	</script>
+</body>
+</html>
