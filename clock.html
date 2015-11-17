@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>clock</title>
+	<style type="text/css">
+		.clock{
+			width: 240px;height: 240px;border: 1px solid #888;
+			border-radius: 50%;box-shadow: 2px 2px 4px #111;
+			background: -webkit-gradient(radial,120 120,0, 120 120,120, from(#ffe),to(#eee));
+			background: -moz-radial-gradient(circle closest-side,#ffe 0%,#eee 100%);
+			position: relative;
+		}
+	</style>
+</head>
+<body>
+	<div class="clock"></div>
+	<script type="text/javascript">
+		window.onload = function() {
+			var div = document.getElementsByTagName("div")[0];
+			drawMark(div);
+			var time = new Date();
+			var hourAngle = time.getHours();
+			var minAngle = time.getMinutes();
+			var secAngle = time.getSeconds();
+			var hour = drawPointer(div,120,120,60,5,"#111",hourAngle*30+minAngle*6/12-90);
+			var minute = drawPointer(div,120,120,80,4,"#555",minAngle*6-90);
+			var second = drawPointer(div,120,120,100,3,"#999",secAngle*6-90);
+
+			setInterval(function(){
+				var time = new Date();
+				var hourAngle = time.getHours();
+				var minAngle = time.getMinutes();
+				var secAngle = time.getSeconds();
+				setCss3(hour,{"transform":"rotate("+(hourAngle*30+minAngle*6/12-90)+"deg)"});
+				setCss3(minute,{"transform":"rotate("+(minAngle*6-90)+"deg)"});
+				setCss3(second,{"transform":"rotate("+(secAngle*6-90)+"deg)"});
+			},1000);
+		};
+		function drawMark(obj) {
+			for(var i=0;i<60;i++) {
+				var widths = 3;
+				var heights = 6;
+				if(i%5 == 0) {
+					widths = 5;
+					heights = 10;
+				}
+				var div = document.createElement("div");
+				div.style.cssText="width:"+widths+"px;height:"+heights+"px;background:#111;position:absolute;top:0;left:120px;";
+				setCss3(div,{"transform":"rotate("+i*6+"deg)","transform-origin":"0px 120px"});
+				obj.appendChild(div);
+			}
+		}
+		function drawPointer(obj,startx,starty,widths,heights,color,angle) {
+			var div = document.createElement("div");
+			div.style.cssText = "width:"+widths+"px;height:"+heights+"px;position:absolute;top:"+starty+"px;left:"+startx+"px;background:"+color+";";
+			obj.appendChild(div);
+			setCss3(div,{"transform":"rotate("+angle+"deg)","transform-origin":"0px 0px"})
+			return div;
+		}
+		function setCss3(obj, attrObj) {
+			for (var i in attrObj) {
+				var newi = i;
+				if (newi.indexOf("-")>0) {
+					var num = newi.indexOf("-");
+					newi = newi.replace(newi.substr(num,2),newi.substr(num+1,1).toUpperCase());
+				}
+				obj.style[newi] = attrObj[i];
+				newi = newi.replace(newi.charAt(0),newi.charAt(0).toUpperCase());
+				obj.style["webkit"+newi]=attrObj[i];
+				obj.style["moz"+newi]=attrObj[i];
+				obj.style["o"+newi]=attrObj[i];
+				obj.style["ms"+newi]=attrObj[i];
+			}
+		}
+	</script>
+</body>
+</html>
